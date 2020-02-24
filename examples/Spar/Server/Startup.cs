@@ -21,6 +21,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Server.Services;
@@ -47,6 +49,10 @@ namespace Server
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var rewriteOptions = new RewriteOptions()
+                .AddRewrite(regex: @"(?:\d{4}-\d{2}-\d{2}/proxy/[^/]+/[^/]+/)(.+)", replacement: "$1", skipRemainingRules: true);
+            app.UseRewriter(rewriteOptions);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -63,7 +69,6 @@ namespace Server
                 app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

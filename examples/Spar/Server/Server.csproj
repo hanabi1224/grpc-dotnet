@@ -5,6 +5,9 @@
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(SpaRoot)node_modules\**;$(SpaRoot)dist\**;$(DefaultItemExcludes)</DefaultItemExcludes>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>

@@ -16,6 +16,7 @@
 
 #endregion
 
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -28,11 +29,22 @@ namespace Server
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            var port = Environment.GetEnvironmentVariable("FC_SERVER_PORT");
+            if (string.IsNullOrEmpty(port))
+            {
+                port = "9000";
+            }
+
+            return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                    .UseStartup<Startup>()
+                    .UseKestrel()
+                    .UseUrls($"http://+:{port}");
                 });
+        }
     }
 }
